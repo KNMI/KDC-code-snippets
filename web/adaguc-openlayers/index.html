@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!-- Precies, ons idee was ook dat je in de source ging kijken -->
+
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<title>Adaguc demo: De laatste bui van november</title>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/nl.js"></script>
+
+<link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css">
+<script src="http://openlayers.org/en/v3.10.1/build/ol.js"></script>
+
+</head>
+<body>
+<div class="container-fluid">
+<div class="row-fluid">
+  <div class="col-md-12">
+    <h1>De laatste bui van november</h1>
+    <p class="lead">Een demonstratie van de KNMI AdaguC WMS in combinatie met OpenLayers.</p>
+  </div>
+</div>
+<div class="row-fluid">
+  <div class="col-sm-6">
+    <div id="map" class="map"></div>
+    <p id="time"></p>
+  </div>
+  <div class="col-sm-6">
+
+    <p>Nieuws van 31 augustus:</p>
+    <blockquote><p>Het verkeer in het westen heeft maandagochtend te maken gehad met overlast door zware regen- en onweersbuien die over het land trekken. Ook afgelopen nacht werden delen van Nederland geteisterd door noodweer. </p>
+    </blockquote>
+    <p>Bron: <a href="http://www.nu.nl/binnenland/4116176/noodweer-zorgt-wateroverlast-en-verkeersproblemen.html">nu.nl</a></p>
+    <h2>Waarom laten we je dit zien?</h2>
+    <p>Hier zie je een eenvoudig voorbeeld van de <a href="https://nl.wikipedia.org/wiki/Web_Map_Service">WMS service</a> van <a href="http://adaguc.knmi.nl/">AdaguC</a>. Binnenkort zal veel meer data uit het <a href="https://data.knmi.nl/">KNMI data centrum</a> via dit systeem worden ontsloten. Wat kun je er mee? Een bookmarkservice van je favoriete weermomenten? Je game voorzien van het actuele, of juist historische, wolkenbeeld? We nodigen je graag uit je eigen ideeën te ontwikkelen! Speel met dit voorbeeld op <a href="http://jsfiddle.net/w12vndvm/2/">JSFiddle</a>.</p>
+  </div>
+</div>
+
+</div>
+<script>
+var rainRadar = new ol.source.ImageWMS({
+  url: 'http://geoservices.knmi.nl/cgi-bin/RADNL_OPER_R___25PCPRR_L3.cgi',
+  params: {
+    'LAYERS': 'RADNL_OPER_R___25PCPRR_L3_COLOR',
+    'TIME': "2015-08-31T13:00:00.000Z"    
+  },
+  ratio: 1
+});
+
+var layers = [
+  new ol.layer.Tile({
+    source: new ol.source.MapQuest({layer: 'sat'})
+  }),
+  new ol.layer.Image({
+    source: rainRadar,
+    opacity: 0.7
+  })
+];
+var map = new ol.Map({
+  layers: layers,
+  target: 'map',
+  view: new ol.View({
+    center: [630000, 6809099],
+    zoom: 6
+  })
+});
+
+var startTime = moment("2015-08-30T22:00")
+var endTime = moment("2015-08-31T05:00")
+var currentTime = startTime.clone();
+ 
+var stepForward = function() {
+  rainRadar.updateParams({'TIME': currentTime.toISOString()});
+  document.getElementById('time').innerHTML = currentTime.format("LLL");
+  currentTime.add(5,'minutes');
+  if (currentTime > endTime) {
+    currentTime = startTime.clone();
+  }
+  setTimeout(stepForward, 200);
+};
+stepForward();
+
+</script>
+</body>
+</html>
