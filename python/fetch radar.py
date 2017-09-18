@@ -15,7 +15,7 @@ datetime = datetime - timedelta(minutes=datetime.minute % 5)
 
 # path to the 5 minute radar dataset for date
 path = (
-    '/download/radar_volume_debilt/2.0/noversion/'
+    '/download/radar_volume_full_herwijnen/1.0/noversion/'
     '{datetime.year}/{datetime.month:02d}/{datetime.day:02d}/'
 ).format(datetime=datetime)
 print path
@@ -32,7 +32,7 @@ if result != '250 CWD command successful':
 # there is a slight delay before we release the data, so get the file from
 # 10 minutes ago
 
-filename = 'RAD_NL60_VOL_NA_{hour:02d}{minute:02d}.h5'.format(
+filename = 'RAD_NL62_VOL_NA_{hour:02d}{minute:02d}.h5'.format(
     hour=datetime.hour, minute=datetime.minute)
 print filename
 result = ftp.retrbinary(
