@@ -4,7 +4,7 @@ Snippets for getting and using data from KNMI Data Center
 
 ## Python
 The folder python contains the following snippets:
-* `fetch radar.py` fetches the latest Volume data from the the radar in Herwijnen from [KNMI Data Center](https://data.knmi.nl/datasets/radar_volume_full_herwijnen/1.0) using ftp;
+* `fetch radar.py` fetches the latest Volume data from the radar in Herwijnen from [KNMI Data Center](https://data.knmi.nl/datasets/radar_volume_full_herwijnen/1.0) using ftp;
 * `read radar.py` uses [wradlib](https://bitbucket.org/wradlib/wradlib) to plot the radar data;
 * `fetch synop.py` fetches the latest synoptic observations from [KNMI Data Center](https://data.knmi.nl/datasets/Actuele10mindataKNMIstations/1) using ftp;
 * `read synop.py` uses netCDF4 for python to read all values from the synoptic data;
